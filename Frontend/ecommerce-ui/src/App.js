@@ -1,24 +1,32 @@
-import ProtectedRoute from "./components/ProtectedRoute";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import Cart from "./pages/Cart";
 import Orders from "./pages/Orders";
-import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
+import Auth from "./pages/Auth";
+import ProductDetails from "./pages/ProductDetails";
+
+import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
+
+import MainLayout from "./layouts/MainLayout";
 
 function App() {
     return (
         <BrowserRouter>
-            <Navbar />
 
-            <div className="p-6">
-                <Routes>
+            <Routes>
+
+                {/* AUTH */}
+                <Route path="/login" element={<Auth />} />
+
+                {/* MAIN LAYOUT */}
+                <Route element={<MainLayout />}>
+
                     <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Auth />} />
+
                     <Route
                         path="/products"
                         element={
@@ -54,8 +62,20 @@ function App() {
                             </AdminRoute>
                         }
                     />
-                </Routes>
-            </div>
+
+                    <Route
+                        path="/products/:id"
+                        element={
+                            <ProtectedRoute>
+                                <ProductDetails />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                </Route>
+
+            </Routes>
+
         </BrowserRouter>
     );
 }

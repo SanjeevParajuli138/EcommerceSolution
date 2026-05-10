@@ -40,7 +40,8 @@ namespace Ecommerce.Infrastructure.Services
                 Name = p.Name,
                 Description = p.Description,
                 Price = p.Price,
-                StockQuantity = p.StockQuantity
+                StockQuantity = p.StockQuantity,
+                ImageUrl = p.ImageUrl
             };
         }
 

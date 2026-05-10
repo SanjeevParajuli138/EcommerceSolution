@@ -1,12 +1,28 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
+import ProductCard from "../components/ProductCard";
+import Loader from "../components/Loader";
 
 export default function Products() {
+
     const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        api.get("/product").then(res => setProducts(res.data));
+        const fetchData = async () => {
+            setLoading(true);
+
+            try {
+                const res = await api.get("/product");
+                setProducts(res.data);
+            } finally {
+                setLoading(false); // ✅ safe here
+            }
+        };
+
+        fetchData();
     }, []);
+    if (loading) return <Loader />;
 
     const addToCart = async (id) => {
         await api.post(`/cart/add?productId=${id}&quantity=1`);
@@ -23,31 +39,11 @@ export default function Products() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
                     {products.map((p) => (
-                        <div key={p.id} className="group flex flex-col bg-white rounded-[2rem] p-4 shadow-sm hover:shadow-soft transition-all duration-300 border border-gray-100">
-                            <div className="w-full aspect-square rounded-[1.5rem] overflow-hidden relative cursor-pointer bg-earth-bg">
-                                <img
-                                    src={`https://localhost:7068${p.imageUrl}`}
-                                    alt={p.name}
-                                    className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
-                                />
-                                {console.log(p) }
-                            </div>
-
-                            <div className="mt-6 px-2 flex flex-col flex-grow">
-                                <h2 className="text-xl font-serif font-medium">{p.name}</h2>
-                                <p className="text-sm text-gray-500 mt-2 font-light leading-relaxed flex-grow">{p.description}</p>
-                                
-                                <div className="mt-6 flex items-center justify-between">
-                                    <p className="text-lg text-earth-accent font-medium">Rs. {p.price}</p>
-                                    <button
-                                        onClick={() => addToCart(p.id)}
-                                        className="bg-earth-green text-white px-5 py-2 rounded-full text-sm hover:bg-opacity-90 transition-all"
-                                    >
-                                        Add to Cart
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                        <ProductCard
+                            key={p.id}
+                            product={p}
+                            addToCart={addToCart}
+                        />
                     ))}
                 </div>
             </div>
