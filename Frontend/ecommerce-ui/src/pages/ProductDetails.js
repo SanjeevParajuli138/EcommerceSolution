@@ -24,10 +24,7 @@ export default function ProductDetails() {
 
     const addToCart = async () => {
         try {
-            await api.post("/cart/add", {
-                productId: product.id,
-                quantity: quantity
-            });
+            await api.post(`/cart/add?productId=${product.id}&quantity=${quantity}`);
 
             alert("Added to cart");
         } catch (err) {

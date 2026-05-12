@@ -7,6 +7,7 @@ import Orders from "./pages/Orders";
 import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
 import ProductDetails from "./pages/ProductDetails";
+import Checkout from "./pages/Checkout";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
@@ -68,6 +69,15 @@ function App() {
                         element={
                             <ProtectedRoute>
                                 <ProductDetails />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/checkout"
+                        element={
+                            <ProtectedRoute>
+                                <Checkout />
                             </ProtectedRoute>
                         }
                     />

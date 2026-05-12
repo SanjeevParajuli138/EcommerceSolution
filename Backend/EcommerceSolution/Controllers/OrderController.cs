@@ -1,4 +1,5 @@
-﻿using Ecommerce.Application.Interfaces;
+﻿using Ecommerce.Application.DTOs;
+using Ecommerce.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -26,9 +27,12 @@ namespace Ecommerce.API.Controllers
         }
 
         [HttpPost("checkout")]
-        public async Task<IActionResult> Checkout()
+        public async Task<IActionResult> Checkout(CheckoutDto dto)
         {
-            var order = await _orderService.Checkout(GetUserId());
+            var order = await _orderService.Checkout(
+                GetUserId(),
+                dto.CartItemIds
+            );
             return Ok(order);
         }
         [HttpGet]

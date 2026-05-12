@@ -1,23 +1,37 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
     const [cart, setCart] = useState(null);
+    const [selectedItems, setSelectedItems] = useState([]);
+    const navigate = useNavigate();
 
-    const checkout = async () => {
-        try {
-            await api.post("/order/checkout");
-            alert("Order placed!");
-        } catch (err) {
-            alert(err.response?.data || "Checkout failed");
-        }
+    const checkout = () => {
+
+        const selectedCartItems = cart.items.filter(item =>
+            selectedItems.includes(item.id)
+        );
+
+        navigate("/checkout", {
+            state: {
+                items: selectedCartItems,
+                total: total
+            }
+        });
     };
 
     useEffect(() => {
         api.get("/cart").then((res) => setCart(res.data));
     }, []);
 
-    const total = cart?.items?.reduce((sum, item) => sum + item.price * item.quantity, 0) || 0;
+    const total =
+        cart?.items
+            ?.filter(item => selectedItems.includes(item.id))
+            .reduce(
+                (sum, item) => sum + item.price * item.quantity,
+                0
+            ) || 0;
 
     const refreshCart = async () => {
         const res = await api.get("/cart");
@@ -38,6 +52,16 @@ export default function Cart() {
         refreshCart();
     };
 
+    const toggleSelect = (id) => {
+        if (selectedItems.includes(id)) {
+            setSelectedItems(
+                selectedItems.filter(x => x !== id)
+            );
+        } else {
+            setSelectedItems([...selectedItems, id]);
+        }
+    };
+
     return (
         <div className="min-h-screen bg-earth-bg text-earth-text font-sans py-16 px-6 md:px-12 selection:bg-earth-green selection:text-white">
             <div className="max-w-4xl mx-auto">
@@ -50,6 +74,12 @@ export default function Cart() {
                     {cart?.items?.length > 0 ? (
                         cart.items.map((item) => (
                             <div key={item.id} className="flex flex-col sm:flex-row items-center justify-between p-6 bg-white rounded-3xl shadow-sm border border-gray-100">
+                                <input
+                                    type="checkbox"
+                                    checked={selectedItems.includes(item.id)}
+                                    onChange={() => toggleSelect(item.id)}
+                                    className="w-5 h-5"
+                                />
                                 <div className="flex items-center gap-6 w-full sm:w-auto">
                                     <div className="w-24 h-24 bg-earth-bg rounded-2xl overflow-hidden flex-shrink-0">
                                         <img src={`https://localhost:7068${item.ImageUrl}`} alt={item.productId} className="w-full h-full object-cover" />

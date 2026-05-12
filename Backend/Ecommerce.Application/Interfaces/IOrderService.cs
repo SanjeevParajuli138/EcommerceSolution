@@ -9,7 +9,7 @@ namespace Ecommerce.Application.Interfaces
 {
     public interface IOrderService
     {
-        Task<Order> Checkout(int userId);
+        Task<Order> Checkout(int userId, List<int> cartItemIds);
         Task<List<Order>> GetUserOrders(int userId);
     }
 }

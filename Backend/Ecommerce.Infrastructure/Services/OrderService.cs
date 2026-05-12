@@ -17,34 +17,37 @@ namespace Ecommerce.Infrastructure.Services
         {
             _context = context;
         }
-        public async Task<Order> Checkout(int userId)
+        public async Task<Order> Checkout(int userId, List<int> cartItemIds)
         {
             var cart = await _context.Carts
                 .Include(c => c.Items)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
 
-            if (cart == null || !cart.Items.Any())
-                throw new Exception("Cart is empty");
+            if (cart == null)
+                throw new Exception("Cart not found");
+
+            var selectedItems = cart.Items
+                .Where(ci => cartItemIds.Contains(ci.Id))
+                .ToList();
+
+            if (!selectedItems.Any())
+                throw new Exception("No items selected");
 
             var order = new Order
             {
                 UserId = userId,
-                TotalAmount = cart.Items.Sum(i => i.Price * i.Quantity)
-            };
-
-            foreach (var item in cart.Items)
-            {
-                order.Items.Add(new OrderItem
+                /*CreatedAt = DateTime.UtcNow,*/
+                Items = selectedItems.Select(ci => new OrderItem
                 {
-                    ProductId = item.ProductId,
-                    Quantity = item.Quantity,
-                    Price = item.Price
-                });
-            }
+                    ProductId = ci.ProductId,
+                    Quantity = ci.Quantity,
+                    Price = ci.Price
+                }).ToList()
+            };
 
             _context.Orders.Add(order);
 
-            _context.CartItems.RemoveRange(cart.Items);
+            _context.CartItems.RemoveRange(selectedItems);
 
             await _context.SaveChangesAsync();
 
