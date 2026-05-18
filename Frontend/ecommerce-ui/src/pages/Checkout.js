@@ -1,14 +1,60 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import api from "../api/axios";
 
 export default function Checkout() {
+    const navigate = useNavigate();
+    const { state } = useLocation();
 
-  const { state } = useLocation();
+    const [paymentMethod, setPaymentMethod] = useState("COD");
 
-  const [paymentMethod, setPaymentMethod] = useState("COD");
+    const items = state?.items || [];
+    const total = state?.total || 0;
 
-  const items = state?.items || [];
-  const total = state?.total || 0;
+    const handlePayment = async () => {
+
+        try {
+
+            const res = await api.post(
+                "/order/create",
+                {
+                    cartItemIds: items.map(x => x.id),
+                    paymentMethod
+                }
+            );
+
+            // KHALTI
+            if (paymentMethod === "KHALTI") {
+
+                window.location.href =
+                    res.data.paymentUrl;
+
+                return;
+            }
+
+            // COD
+            if (paymentMethod === "COD") {
+
+                alert("Order placed successfully");
+
+                navigate("/orders");
+
+                return;
+            }
+
+            // ESEWA
+            if (paymentMethod === "ESEWA") {
+
+                alert("Esewa coming soon");
+
+            }
+
+        } catch (err) {
+
+            console.log(err);
+
+        }
+    };
 
   return (
     <div className="min-h-screen bg-earth-bg px-6 py-12">
@@ -51,68 +97,73 @@ export default function Checkout() {
 
         </div>
 
-        {/* RIGHT */}
-        <div className="bg-white rounded-3xl p-8 shadow-sm h-fit sticky top-10">
+              {/* RIGHT */}
+              <div className="bg-white rounded-3xl p-8 shadow-sm h-fit sticky top-10">
 
-          <h2 className="text-2xl font-serif mb-6">
-            Payment
-          </h2>
+                  <h2 className="text-2xl font-serif mb-6">
+                      Payment
+                  </h2>
 
-          <div className="space-y-4">
+                  <div className="space-y-4">
 
-            <label className="flex items-center gap-3">
-              <input
-                type="radio"
-                value="COD"
-                checked={paymentMethod === "COD"}
-                onChange={(e) => setPaymentMethod(e.target.value)}
-              />
+                      {/* COD */}
+                      <label className="flex items-center gap-3">
+                          <input
+                              type="radio"
+                              value="COD"
+                              checked={paymentMethod === "COD"}
+                              onChange={(e) => setPaymentMethod(e.target.value)}
+                          />
 
-              Cash on Delivery
-            </label>
+                          Cash on Delivery
+                      </label>
 
-            <label className="flex items-center gap-3">
-              <input
-                type="radio"
-                value="KHALTI"
-                checked={paymentMethod === "KHALTI"}
-                onChange={(e) => setPaymentMethod(e.target.value)}
-              />
+                      {/* KHALTI */}
+                      <label className="flex items-center gap-3">
+                          <input
+                              type="radio"
+                              value="KHALTI"
+                              checked={paymentMethod === "KHALTI"}
+                              onChange={(e) => setPaymentMethod(e.target.value)}
+                          />
 
-              Khalti
-            </label>
+                          Khalti
+                      </label>
 
-            <label className="flex items-center gap-3">
-              <input
-                type="radio"
-                value="ESEWA"
-                checked={paymentMethod === "ESEWA"}
-                onChange={(e) => setPaymentMethod(e.target.value)}
-              />
+                      {/* ESEWA */}
+                      <label className="flex items-center gap-3">
+                          <input
+                              type="radio"
+                              value="ESEWA"
+                              checked={paymentMethod === "ESEWA"}
+                              onChange={(e) => setPaymentMethod(e.target.value)}
+                          />
 
-              eSewa
-            </label>
+                          eSewa
+                      </label>
 
-          </div>
+                  </div>
 
-          <div className="mt-10">
+                  <div className="mt-10">
 
-            <div className="flex justify-between mb-6">
-              <span>Total</span>
-              <span className="font-bold text-2xl">
-                Rs. {total}
-              </span>
-            </div>
+                      <div className="flex justify-between mb-6">
+                          <span>Total</span>
 
-            <button
-              className="w-full bg-earth-green text-white py-4 rounded-full"
-            >
-              Continue Payment
-            </button>
+                          <span className="font-bold text-2xl">
+                              Rs. {total}
+                          </span>
+                      </div>
 
-          </div>
+                      <button
+                          onClick={handlePayment}
+                          className="w-full bg-earth-green text-white py-4 rounded-full"
+                      >
+                          Continue Payment
+                      </button>
 
-        </div>
+                  </div>
+
+              </div>
 
       </div>
 

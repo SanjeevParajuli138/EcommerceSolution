@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ecommerce.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,10 +13,19 @@ namespace Ecommerce.Domain.Entities
 
         public int UserId { get; set; }
 
-        public DateTime OrderDate { get; set; } = DateTime.UtcNow;
-
         public decimal TotalAmount { get; set; }
 
         public List<OrderItem> Items { get; set; } = new();
+
+        public PaymentMethod PaymentMethod { get; set; }
+
+        public PaymentStatus PaymentStatus { get; set; }
+
+        public OrderStatus OrderStatus { get; set; }
+
+        public string? TransactionId { get; set; }
+
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+
     }
 }

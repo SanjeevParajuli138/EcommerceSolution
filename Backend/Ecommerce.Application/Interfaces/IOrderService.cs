@@ -1,4 +1,5 @@
-﻿using Ecommerce.Domain.Entities;
+﻿using Ecommerce.Application.DTOs;
+using Ecommerce.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,10 @@ namespace Ecommerce.Application.Interfaces
     {
         Task<Order> Checkout(int userId, List<int> cartItemIds);
         Task<List<Order>> GetUserOrders(int userId);
+        Task<Order> CreateOrder(int userId, CreateOrderDto dto);
+
+        Task MarkOrderPaid(int orderId, string transactionId);
+
+        Task MarkOrderFailed(int orderId);
     }
 }
