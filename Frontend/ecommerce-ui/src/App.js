@@ -8,6 +8,7 @@ import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
 import ProductDetails from "./pages/ProductDetails";
 import Checkout from "./pages/Checkout";
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
@@ -78,6 +79,15 @@ function App() {
                         element={
                             <ProtectedRoute>
                                 <Checkout />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/payment-success"
+                        element={
+                            <ProtectedRoute>
+                                <PaymentSuccess />
                             </ProtectedRoute>
                         }
                     />
