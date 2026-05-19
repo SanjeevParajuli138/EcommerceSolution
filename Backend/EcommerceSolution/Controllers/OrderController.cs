@@ -15,10 +15,12 @@ namespace Ecommerce.API.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly IPaymentService _paymentService;
-        public OrderController(IOrderService orderService, IPaymentService paymentService)
+        private readonly ICommonService _commonService;
+        public OrderController(IOrderService orderService, IPaymentService paymentService, ICommonService commonService)
         {
             _orderService = orderService;
             _paymentService = paymentService;
+            _commonService = commonService;
         }
         private int GetUserId()
         {
@@ -44,6 +46,12 @@ namespace Ecommerce.API.Controllers
                     GetUserId(),
                     dto
                 );
+
+            if (dto.PaymentMethod == PaymentMethod.COD)
+            {
+                await _commonService.ReduceStock(order.Id);
+            }
+
             // KHALTI
             if (dto.PaymentMethod == PaymentMethod.Khalti)
             {

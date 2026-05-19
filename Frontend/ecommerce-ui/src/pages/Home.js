@@ -43,15 +43,15 @@ export default function Home() {
                     {/* Card 1 */}
                     <div className="group cursor-pointer">
                         <div className="w-full aspect-[4/5] bg-white rounded-3xl overflow-hidden shadow-sm mb-6">
-                            <img src="https://images.unsplash.com/photo-1610505466038-16e737145f8f?q=80&w=800&auto=format&fit=crop" alt="Ceramic Vase" className="w-full h-full object-cover object-center transform group-hover:scale-105 transition duration-700" />
+                            <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1200&auto=format&fit=crop" alt="Ceramic Vase" className="w-full h-full object-cover object-center transform group-hover:scale-105 transition duration-700" />
                         </div>
                         <div className="text-center">
-                            <h3 className="text-lg font-serif">Stoneware Vase</h3>
+                            <h3 className="text-lg font-serif">Stoneware Vase</h3> 
                             <p className="text-earth-accent mt-1">Rs. 3200</p>
                         </div>
                     </div>
                     {/* Card 2 */}
-                    <div className="group cursor-pointer mt-0 md:mt-12">
+                    <div className="group cursor-pointer">
                         <div className="w-full aspect-[4/5] bg-white rounded-3xl overflow-hidden shadow-sm mb-6">
                             <img src="https://images.unsplash.com/photo-1599696848652-f0ff23bc911f?q=80&w=800&auto=format&fit=crop" alt="Linen Throw" className="w-full h-full object-cover object-center transform group-hover:scale-105 transition duration-700" />
                         </div>
@@ -63,7 +63,7 @@ export default function Home() {
                     {/* Card 3 */}
                     <div className="group cursor-pointer">
                         <div className="w-full aspect-[4/5] bg-white rounded-3xl overflow-hidden shadow-sm mb-6">
-                            <img src="https://images.unsplash.com/photo-1603006905393-21b369c02d53?q=80&w=800&auto=format&fit=crop" alt="Table Lamp" className="w-full h-full object-cover object-center transform group-hover:scale-105 transition duration-700" />
+                            <img src="https://images.unsplash.com/photo-1599696848652-f0ff23bc911f?q=80&w=800&auto=format&fit=crop" alt="Table Lamp" className="w-full h-full object-cover object-center transform group-hover:scale-105 transition duration-700" />
                         </div>
                         <div className="text-center">
                             <h3 className="text-lg font-serif">Terracotta Lamp</h3>

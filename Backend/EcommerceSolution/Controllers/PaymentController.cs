@@ -12,11 +12,13 @@ public class PaymentController : ControllerBase
 {
     private readonly IPaymentService _paymentService;
     private readonly IOrderService _orderService;
+    private readonly ICommonService _commonService;
 
-    public PaymentController(IPaymentService paymentService, IOrderService orderService)
+    public PaymentController(IPaymentService paymentService, IOrderService orderService, ICommonService commonService)
     {
         _paymentService = paymentService;
         _orderService = orderService;
+        _commonService = commonService;
     }
 
 
@@ -38,6 +40,8 @@ public class PaymentController : ControllerBase
             dto.OrderId,
             dto.Pidx
         );
+
+        await _commonService.ReduceStock(dto.OrderId);
 
         return Ok();
     }

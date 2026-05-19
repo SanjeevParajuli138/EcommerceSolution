@@ -13,6 +13,7 @@ namespace Ecommerce.Domain.Entities
         public int OrderId { get; set; }
 
         public int ProductId { get; set; }
+        virtual public Product? Product { get; set; }
 
         public int Quantity { get; set; }
 

@@ -6,6 +6,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="wwroot\**" />
+    <Content Remove="wwroot\**" />
+    <EmbeddedResource Remove="wwroot\**" />
+    <None Remove="wwroot\**" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
@@ -18,7 +25,7 @@
   <ItemGroup>
     <Folder Include="Extensions\" />
     <Folder Include="Middlewares\" />
-    <Folder Include="wwroot\images\" />
+    <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 
   <ItemGroup>
